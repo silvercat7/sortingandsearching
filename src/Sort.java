@@ -23,7 +23,7 @@ public class Sort {
             int[] test = tests.get(i);
             System.out.println("test " + (i + 1));
             System.out.println("before: " + Arrays.toString(test));
-            doubleSelectionSort(test);
+
             System.out.println("after: " + Arrays.toString(test));
             System.out.println("-------------------------");
         }
