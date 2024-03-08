@@ -15,16 +15,16 @@ public class Test {
                 int[] baseArray = createRandomArray(arraySize);
                 int[] copy = Arrays.copyOf(baseArray, baseArray.length);
                 long startTime = System.currentTimeMillis();
-                Sort.insertionSort(copy);
+                Sort.selectionSort(copy);
                 long endTime = System.currentTimeMillis();
-                insertionTotalTime += (endTime - startTime);
+                selectionTotalTime += (endTime - startTime);
                 copy = Arrays.copyOf(baseArray, baseArray.length);
                 startTime = System.currentTimeMillis();
-                Sort.selectionSort(copy);
+                Sort.insertionSort(copy);
                 endTime = System.currentTimeMillis();
-                selectionTotalTime += (endTime - startTime);
+                insertionTotalTime += (endTime - startTime);
             }
-            System.out.println(arraySize + ", " + (double) insertionTotalTime/NUM_ITERATIONS + ", " + (double) selectionTotalTime/NUM_ITERATIONS);
+            System.out.println(arraySize + ", " + (double) selectionTotalTime/NUM_ITERATIONS + ", " + (double) insertionTotalTime/NUM_ITERATIONS);
         }
     }
 
