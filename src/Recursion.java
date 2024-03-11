@@ -15,11 +15,23 @@ public class Recursion {
         System.out.println("hi(())ih: " + nested("hi(())ih"));
     }
 
-    public static long fibonacci(long n) {
+    public static long fibonacci(int n) {
         if (n == 1 || n == 2) {
             return 1;
         } else {
             return fibonacci(n - 1) + fibonacci(n - 2);
+        }
+    }
+
+    public static long tripleFibonacci(int n) {
+        if (n == 1) {
+            return 1;
+        } else if (n == 2) {
+            return 1;
+        } else if (n == 3) {
+            return 2;
+        } else {
+            return tripleFibonacci(n - 1) + tripleFibonacci(n - 2) + tripleFibonacci(n - 3);
         }
     }
 
@@ -44,6 +56,14 @@ public class Recursion {
             } else {
                 return false;
             }
+        }
+    }
+
+    public static String nestedStars(String input) {
+        if (input.length() <= 1) {
+            return input;
+        } else {
+            return input.charAt(0) + "*" + input.substring(1);
         }
     }
 }
