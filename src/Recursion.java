@@ -13,6 +13,10 @@ public class Recursion {
         System.out.println("((): " + nested("(()"));
         System.out.println("()(): " + nested("()()"));
         System.out.println("hi(())ih: " + nested("hi(())ih"));
+        int[] array = {2, 4, 8};
+        System.out.println(groupSum(0, array, 10));
+        System.out.println(groupSum(0, array, 14));
+        System.out.println(groupSum(0, array, 9));
     }
 
     public static long fibonacci(int n) {
@@ -59,11 +63,35 @@ public class Recursion {
         }
     }
 
-    public static String nestedStars(String input) {
+    public static String nestedStars1(String input) {
         if (input.length() <= 1) {
             return input;
         } else {
-            return input.charAt(0) + "*" + input.substring(1);
+            return input.charAt(0) + "*" + nestedStars1(input.substring(1));
+        }
+    }
+
+    public static String nestedStars2(String input) {
+        if (input.length() <= 1) {
+            return input;
+        } else {
+            return nestedStars2(input.substring(0, input.length()/2)) + "*" + nestedStars2(input.substring(input.length()/2));
+        }
+    }
+
+    public static int countX(String input) {
+        if (!input.contains("x")) {
+            return 0;
+        } else {
+            return countX(input.substring(input.indexOf("x") + 1)) + 1;
+        }
+    }
+
+    public static boolean groupSum(int start, int[] input, int target) {
+        if (start >= input.length) {
+            return target == 0;
+        } else {
+            return groupSum(start + 1, input, target - input[start]) || groupSum(start + 1, input, target);
         }
     }
 }
