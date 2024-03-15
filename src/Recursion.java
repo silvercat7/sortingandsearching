@@ -1,3 +1,5 @@
+import com.sun.xml.internal.fastinfoset.tools.XML_SAX_StAX_FI;
+
 public class Recursion {
     public static void main(String[] args) {
         for (int i = 1; i <= 10; i++) {
@@ -13,10 +15,12 @@ public class Recursion {
         System.out.println("((): " + nested("(()"));
         System.out.println("()(): " + nested("()()"));
         System.out.println("hi(())ih: " + nested("hi(())ih"));
-        int[] array = {2, 4, 8};
-        System.out.println(groupSum(0, array, 10));
-        System.out.println(groupSum(0, array, 14));
-        System.out.println(groupSum(0, array, 9));
+//        int[] arr = {2, 4, 8};
+//        System.out.println(groupSum(0, arr, 10));
+//        System.out.println(groupSum(0, arr, 14));
+//        System.out.println(groupSum(0, arr, 9));
+        int[] array = {13, 92, 12, 304, 4, 48, 66, 724, 93, 104, 34, 5, 22, 96, 89, 12, 83, 29, 68, 7, 104};
+        System.out.println(findLargest(array, 0, 20));
     }
 
     public static long fibonacci(int n) {
@@ -93,5 +97,15 @@ public class Recursion {
         } else {
             return groupSum(start + 1, input, target - input[start]) || groupSum(start + 1, input, target);
         }
+    }
+
+    public static int findLargest(int[] array, int leftIndex, int rightIndex) {
+        if (leftIndex == rightIndex) {
+            return array[leftIndex];
+        }
+        int mid = (leftIndex + rightIndex)/2;
+        int left = findLargest(array, leftIndex, mid);
+        int right = findLargest(array, mid + 1, rightIndex);
+        return Math.max(left, right);
     }
 }
