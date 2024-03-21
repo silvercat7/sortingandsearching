@@ -34,7 +34,7 @@ public class RecursionPractice {
         if (start == end) {
             return start;
         }
-        int mid = (start + end)/2;
+        int mid = (start + end) / 2;
         int leftIndex = minIndex(input, start, mid);
         int rightIndex = minIndex(input, mid + 1, end);
         return Math.min(input[leftIndex], input[rightIndex]);
@@ -43,11 +43,10 @@ public class RecursionPractice {
     public static String removeDoubles(String input) {
         if (input.length() <= 1) {
             return input;
+        } else if (input.charAt(0) == input.charAt(1)) {
+            return removeDoubles(input.substring(1));
         } else {
-            if (input.charAt(0) == input.charAt(1)) {
-                return removeDoubles(input.substring(1));
-            }
+            return input.charAt(0) + removeDoubles(input.substring(1));
         }
-        return "-1";
     }
 }
