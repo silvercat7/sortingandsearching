@@ -124,7 +124,7 @@ public class Sort {
     public static void merge(int[] array, int[] temp, int s1, int e1, int s2, int e2) {
         int one = s1;
         int two = s2;
-        int next = 0;
+        int next = s1;
         while (one <= e1 && two <= e2) {
             if (array[one] <= array[two]) {
                 temp[next] = array[one];
@@ -136,14 +136,17 @@ public class Sort {
                 two++;
             }
         }
-        if (one <= e1) {
+        while (one <= e1) {
             temp[next] = array[one];
-        } else {
+            next++;
+            one++;
+        }
+        while (two <= e2) {
             temp[next] = array[two];
+            next++;
+            two++;
         }
-        if (e2 - s1 >= 0) {
-            System.arraycopy(temp, s1, array, s1, e2 - s1);
-        }
+        System.arraycopy(temp, s1, array, s1, (e2 - s1) + 1);
     }
 
     public static void swap(int a, int b, int[] array) {
