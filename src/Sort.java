@@ -23,7 +23,7 @@ public class Sort {
             int[] test = tests.get(i);
             System.out.println("test " + (i + 1));
             System.out.println("before: " + Arrays.toString(test));
-
+            mergeSort(test);
             System.out.println("after: " + Arrays.toString(test));
             System.out.println("-------------------------");
         }
@@ -100,6 +100,53 @@ public class Sort {
             }
             array[place] = value;
         }
+    }
+
+    public static void mergeSort(int[] array) {
+        int[] temp = new int[array.length];
+        mergeSort(array, temp, 0, array.length - 1);
+    }
+
+    public static void mergeSort(int[] array, int[] temp, int start, int end) {
+        if (start < end) {
+            if (start + 1 == end) {
+                if (array[start] > array[end]) {
+                    swap(start, end, array);
+                }
+            } else {
+                mergeSort(array, temp, start, (start + end) / 2);
+                mergeSort(array, temp, ((start + end) / 2) + 1, end);
+                merge(array, temp, start, (start + end) / 2, ((start + end) / 2) + 1, end);
+            }
+        }
+    }
+
+    public static void merge(int[] array, int[] temp, int s1, int e1, int s2, int e2) {
+        int one = s1;
+        int two = s2;
+        int next = s1;
+        while (one <= e1 && two <= e2) {
+            if (array[one] <= array[two]) {
+                temp[next] = array[one];
+                next++;
+                one++;
+            } else {
+                temp[next] = array[two];
+                next++;
+                two++;
+            }
+        }
+        while (one <= e1) {
+            temp[next] = array[one];
+            next++;
+            one++;
+        }
+        while (two <= e2) {
+            temp[next] = array[two];
+            next++;
+            two++;
+        }
+        System.arraycopy(temp, s1, array, s1, (e2 - s1) + 1);
     }
 
     public static void swap(int a, int b, int[] array) {
