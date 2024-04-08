@@ -26,14 +26,20 @@ public class TileState {
 
     public ArrayList<TileState> getNextStates() {
         ArrayList<TileState> nextStates = new ArrayList<>();
-        for (int row = emptyR - 1; row <= emptyR + 1 && row >= 0 && row < board.length; row++) {
-            for (int col = emptyC - 1; col <= emptyC + 1 && col >= 0 && col < board[0].length; col++) {
-                if (row < board.length && col < board[0].length) {
-                    TileState nextState = copy();
-                    nextState.moveTile(row, col);
-                    nextState.parent = this;
-                    nextStates.add(nextState);
-                }
+        for (int row = emptyR - 1; row <= emptyR + 1; row += 2) {
+            if (row >= 0 && row < board.length) {
+                TileState nextState = copy();
+                nextState.moveTile(row, emptyC);
+                nextState.parent = this;
+                nextStates.add(nextState);
+            }
+        }
+        for (int col = emptyC - 1; col <= emptyC + 1; col += 2) {
+            if (col >= 0 && col < board[emptyR].length) {
+                TileState nextState = copy();
+                nextState.moveTile(emptyR, col);
+                nextState.parent = this;
+                nextStates.add(nextState);
             }
         }
         return nextStates;
@@ -98,7 +104,7 @@ public class TileState {
     }
 
     public String toString() {
-        StringBuilder out = new StringBuilder("");
+        StringBuilder out = new StringBuilder();
         for (int[] ints : board) {
             for (int i : ints) {
                 out.append("[").append(i).append("] ");
