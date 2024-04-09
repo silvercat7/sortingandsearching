@@ -1,3 +1,5 @@
+import com.sun.xml.internal.ws.resources.UtilMessages;
+
 import java.util.*;
 
 public class PuzzleSolver {
@@ -8,11 +10,11 @@ public class PuzzleSolver {
     public static final int[][] THIRTY_ONE_MOVE_TEST = {{8, 7, 6}, {0, 4, 1}, {2, 5, 3}};
 
     public static void main(String[] args) {
-        play();
-        breadthFirst(ONE_MOVE_TEST);
-        breadthFirst(TWO_MOVE_TEST);
-        breadthFirst(SEVEN_MOVE_TEST);
-        breadthFirst(FOURTEEN_MOVE_TEST);
+//        play();
+//        breadthFirst(ONE_MOVE_TEST);
+//        breadthFirst(TWO_MOVE_TEST);
+//        breadthFirst(SEVEN_MOVE_TEST);
+//        breadthFirst(FOURTEEN_MOVE_TEST);
         breadthFirst(THIRTY_ONE_MOVE_TEST);
     }
 
