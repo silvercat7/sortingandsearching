@@ -111,7 +111,7 @@ public class TileState {
             }
             out.append("\n");
         }
-        out.append("--------------------------");
+//        out.append("--------------------------");
         return out.toString();
     }
 
