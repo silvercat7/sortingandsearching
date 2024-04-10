@@ -16,7 +16,6 @@ public class PuzzleInterface {
                 System.out.println(next.get(i));
             }
             int choice = in.nextInt();
-
             if (0 <= choice && choice < next.size()) {
                 current = next.get(choice);
             }

@@ -1,5 +1,3 @@
-import com.sun.xml.internal.ws.resources.UtilMessages;
-
 import java.util.*;
 
 public class PuzzleSolver {
@@ -10,11 +8,10 @@ public class PuzzleSolver {
     public static final int[][] THIRTY_ONE_MOVE_TEST = {{8, 7, 6}, {0, 4, 1}, {2, 5, 3}};
 
     public static void main(String[] args) {
-//        play();
-//        breadthFirst(ONE_MOVE_TEST);
-//        breadthFirst(TWO_MOVE_TEST);
-//        breadthFirst(SEVEN_MOVE_TEST);
-//        breadthFirst(FOURTEEN_MOVE_TEST);
+        breadthFirst(ONE_MOVE_TEST);
+        breadthFirst(TWO_MOVE_TEST);
+        breadthFirst(SEVEN_MOVE_TEST);
+        breadthFirst(FOURTEEN_MOVE_TEST);
         breadthFirst(THIRTY_ONE_MOVE_TEST);
     }
 
@@ -82,25 +79,5 @@ public class PuzzleSolver {
             }
         }
         return null;
-    }
-
-    private static void play() {
-        Scanner in = new Scanner(System.in);
-        int[][] initial = {{1, 4, 3}, {6, 0, 7}, {5, 8, 2}};
-        TileState current = new TileState(initial);
-        System.out.println(current);
-        while (!current.isGoal()) {
-            System.out.println(current);
-            System.out.println("which would you like?");
-            List<TileState> next = current.getNextStates();
-            for (int i = 0; i < next.size(); i++) {
-                System.out.println("type " + i + " for");
-                System.out.println(next.get(i));
-            }
-            int choice = in.nextInt();
-            if (0 <= choice && choice < next.size()) {
-                current = next.get(choice);
-            }
-        }
     }
 }
