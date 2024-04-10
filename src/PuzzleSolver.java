@@ -1,7 +1,6 @@
 import java.util.*;
 
 public class PuzzleSolver {
-    public static final int MAX_DEPTH = 8;
     public static final int[][] ONE_MOVE_TEST = {{1, 2, 3}, {4, 5, 6}, {7, 0, 8}};
     public static final int[][] TWO_MOVE_TEST = {{1, 2, 3}, {4, 0, 6}, {7, 5, 8}};
     public static final int[][] SEVEN_MOVE_TEST = {{1, 2, 3}, {8, 7, 5}, {4, 0, 6}};
@@ -9,11 +8,11 @@ public class PuzzleSolver {
     public static final int[][] THIRTY_ONE_MOVE_TEST = {{8, 7, 6}, {0, 4, 1}, {2, 5, 3}};
 
     public static void main(String[] args) {
-////        play();
-//        breadthFirst(ONE_MOVE_TEST);
-//        breadthFirst(TWO_MOVE_TEST);
+        breadthFirst(ONE_MOVE_TEST);
+        breadthFirst(TWO_MOVE_TEST);
         breadthFirst(SEVEN_MOVE_TEST);
-//        breadthFirst(FOURTEEN_MOVE_TEST);
+        breadthFirst(FOURTEEN_MOVE_TEST);
+        breadthFirst(THIRTY_ONE_MOVE_TEST);
     }
 
     private static void breadthFirst(int[][] initialBoard) {
@@ -46,9 +45,10 @@ public class PuzzleSolver {
         ArrayList<TileState> moves = new ArrayList<>();
         ArrayList<TileState> possibilities = new ArrayList<>();
         moves.add(initial);
+        int start = 0;
         while (!solved(moves)) {
-            for (TileState move : moves) {
-                possibilities.addAll(move.getNextStates());
+            for (int i = start; i < moves.size(); i++) {
+                possibilities.addAll(moves.get(i).getNextStates());
             }
             for (int i = 0; i < possibilities.size(); i++) {
                 if (moves.contains(possibilities.get(i))) {
@@ -56,10 +56,11 @@ public class PuzzleSolver {
                     i--;
                 }
             }
+            start = moves.size();
             moves.addAll(possibilities);
             possibilities.clear();
         }
-        return moves.get(moves.size() - 1);
+        return solution(moves);
     }
 
     private static boolean solved(ArrayList<TileState> moves) {
@@ -71,23 +72,12 @@ public class PuzzleSolver {
         return false;
     }
 
-    private static void play() {
-        Scanner in = new Scanner(System.in);
-        int[][] initial = {{1, 4, 3}, {6, 0, 7}, {5, 8, 2}};
-        TileState current = new TileState(initial);
-        System.out.println(current);
-        while (!current.isGoal()) {
-            System.out.println(current);
-            System.out.println("which would you like?");
-            List<TileState> next = current.getNextStates();
-            for (int i = 0; i < next.size(); i++) {
-                System.out.println("type " + i + " for");
-                System.out.println(next.get(i));
-            }
-            int choice = in.nextInt();
-            if (0 <= choice && choice < next.size()) {
-                current = next.get(choice);
+    private static TileState solution(ArrayList<TileState> moves) {
+        for (TileState move : moves) {
+            if (move.isGoal()) {
+                return move;
             }
         }
+        return null;
     }
 }
