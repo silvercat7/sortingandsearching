@@ -9,8 +9,7 @@ public class PuzzleSolver {
     public static final int[][] THIRTY_ONE_MOVE_TEST = {{8, 7, 6}, {0, 4, 1}, {2, 5, 3}};
 
     public static void main(String[] args) {
-        breadthFirst(FOURTEEN_MOVE_TEST);
-        depthFirst(FOURTEEN_MOVE_TEST);
+        aStar(THIRTY_ONE_MOVE_TEST);
     }
 
     private static void breadthFirst(int[][] initialBoard) {
@@ -108,6 +107,72 @@ public class PuzzleSolver {
             return solution;
         } else {
             return null;
+        }
+    }
+
+    private static void aStar(int[][] initialBoard) {
+        TileState initial = new TileState(initialBoard);
+        TileState result = aStar(initial);
+        if (result == null) {
+            System.out.println("no results found");
+            System.out.println(initial);
+            return;
+        }
+        System.out.print("solved in " + result.getDepth());
+        if (result.getDepth() == 1) {
+            System.out.println(" move:");
+        } else {
+            System.out.println(" moves:");
+        }
+        ArrayList<TileState> solutionPath = new ArrayList<>();
+        TileState current = result;
+        while (!current.equals(initial)) {
+            solutionPath.add(current);
+            current = current.getParent();
+        }
+        System.out.println(initial);
+        for (int i = (solutionPath.size() - 1); i >= 0; i--) {
+            System.out.println(solutionPath.get(i));
+        }
+    }
+
+    private static TileState aStar(TileState initial) {
+        return aStar(initial, MAX_DEPTH);
+    }
+
+    private static TileState aStar(TileState initial, int minDepth) {
+        if (initial.isGoal()) {
+            return initial;
+        } else if (initial.getDepth() < minDepth) {
+            TileState solution = null;
+            ArrayList<TileState> possibilities = new ArrayList<>(initial.getNextStates());
+            sort(possibilities);
+            for (TileState possibility : possibilities) {
+                TileState result = aStar(possibility, minDepth);
+                if (result != null && result.isGoal()) {
+                    if (result.getDepth() <= minDepth) {
+                        minDepth = result.getDepth();
+                        solution = result;
+                    }
+                }
+            }
+            return solution;
+        } else {
+            return null;
+        }
+    }
+
+    private static void sort(ArrayList<TileState> possibilities) {
+        for (int index = 1; index < possibilities.size(); index++) {
+            TileState toInsert = possibilities.get(index);
+            int score = possibilities.get(index).getScore();
+            int place = index;
+            possibilities.set(place, possibilities.get(place- 1));
+            while (place > 0 && score < possibilities.get(place - 1).getScore()) {
+                possibilities.set(place, possibilities.get(place- 1));
+                place--;
+            }
+            possibilities.set(place, toInsert);
         }
     }
 

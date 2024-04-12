@@ -3,11 +3,11 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class TileState {
-    private int[][] board;
-    private TileState parent;
+    private final int[][] board;
     private int emptyR, emptyC;
-    private int depth;
-    private static final int[][] GOAL_STATE  = { {1, 2, 3}, {4, 5, 6}, {7, 8, 0} };
+    private TileState parent;
+    private final int depth;
+    private static final int[][] GOAL_STATE = {{1, 2, 3}, {4, 5, 6}, {7, 8, 0}};
 
     public TileState(int[][] initial) {
         board = copy(initial);
@@ -45,10 +45,6 @@ public class TileState {
         return nextStates;
     }
 
-    public int[][] getBoard() {
-        return this.board;
-    }
-
     private void setEmptyLocation() {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[r].length; c++) {
@@ -58,10 +54,6 @@ public class TileState {
                 }
             }
         }
-    }
-
-    public void setParent(TileState p) {
-        this.parent = p;
     }
 
     public boolean isGoal() {
@@ -89,7 +81,7 @@ public class TileState {
 
     @Override
     public boolean equals(Object other) {
-        return equalBoards(this.board, ((TileState)other).board);
+        return equalBoards(this.board, ((TileState) other).board);
     }
 
     @Override
@@ -97,10 +89,6 @@ public class TileState {
         int result = Objects.hash(emptyR, emptyC);
         result = 31 * result + Arrays.deepHashCode(board);
         return result;
-    }
-
-    public TileState copy() {
-        return new TileState(this);
     }
 
     public String toString() {
@@ -114,16 +102,8 @@ public class TileState {
         return out.toString();
     }
 
-    public static int[][] getGoalState() {
-        return GOAL_STATE;
-    }
-
-    private boolean isInBounds(int r, int c) {
-        if (r < 0 || c < 0) {
-            return false;
-        } else {
-            return r < board.length && c < board[0].length;
-        }
+    public TileState copy() {
+        return new TileState(this);
     }
 
     private int[][] copy(int[][] initial) {
@@ -144,6 +124,34 @@ public class TileState {
             }
         }
         return true;
+    }
+
+    private int heuristic() {
+        int score = 0;
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[0].length; col++) {
+                score += movesAway(board[row][col], row, col);
+            }
+        }
+        return score;
+    }
+
+    private int movesAway(int tile, int tileR, int tileC) {
+        int row = 0;
+        int col = 0;
+        for (int r = 0; r < GOAL_STATE.length; r++) {
+            for (int c = 0; c < GOAL_STATE[0].length; c++) {
+                if (GOAL_STATE[r][c] == tile) {
+                    row = r;
+                    col = c;
+                }
+            }
+        }
+        return Math.abs(tileR - row) + Math.abs(tileC - col);
+    }
+
+    public int getScore() {
+        return depth + heuristic();
     }
 
     public TileState getParent() {
