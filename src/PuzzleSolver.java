@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class PuzzleSolver {
-    public static final int MAX_DEPTH = 3;
+    public static final int MAX_DEPTH = 30;
     public static final int[][] ONE_MOVE_TEST = {{1, 2, 3}, {4, 5, 6}, {7, 0, 8}};
     public static final int[][] TWO_MOVE_TEST = {{1, 2, 3}, {4, 0, 6}, {7, 5, 8}};
     public static final int[][] SEVEN_MOVE_TEST = {{1, 2, 3}, {8, 7, 5}, {4, 0, 6}};
@@ -9,12 +9,8 @@ public class PuzzleSolver {
     public static final int[][] THIRTY_ONE_MOVE_TEST = {{8, 7, 6}, {0, 4, 1}, {2, 5, 3}};
 
     public static void main(String[] args) {
-//        breadthFirst(ONE_MOVE_TEST);
-//        breadthFirst(TWO_MOVE_TEST);
-//        breadthFirst(SEVEN_MOVE_TEST);
-//        breadthFirst(FOURTEEN_MOVE_TEST);
-//        breadthFirst(THIRTY_ONE_MOVE_TEST);
-        depthFirst(ONE_MOVE_TEST);
+        breadthFirst(FOURTEEN_MOVE_TEST);
+        depthFirst(FOURTEEN_MOVE_TEST);
     }
 
     private static void breadthFirst(int[][] initialBoard) {
@@ -90,22 +86,29 @@ public class PuzzleSolver {
         }
     }
 
-    private static TileState depthFirst(TileState initial) { //returns a result but not the best result
-        //also returns 3 moves for the one move, but prints only one move
-        if (initial.getDepth() < MAX_DEPTH) {
-            ArrayList<TileState> possibilities = new ArrayList<>(initial.getNextStates());
-            TileState result = initial;
-            for (TileState possibility : possibilities) {
-//                System.out.println(possibility + "depth: " + possibility.getDepth());
-                result = depthFirst(possibility);
-                if (result.isGoal()) {
+    private static TileState depthFirst(TileState initial) {
+        return depthFirst(initial, MAX_DEPTH);
+    }
 
-                    return result;
+    private static TileState depthFirst(TileState initial, int minDepth) {
+        if (initial.isGoal()) {
+            return initial;
+        } else if (initial.getDepth() < minDepth) {
+            TileState solution = null;
+            ArrayList<TileState> possibilities = new ArrayList<>(initial.getNextStates());
+            for (TileState possibility : possibilities) {
+                TileState result = depthFirst(possibility, minDepth);
+                if (result != null && result.isGoal()) {
+                    if (result.getDepth() <= minDepth) {
+                        minDepth = result.getDepth();
+                        solution = result;
+                    }
                 }
             }
-            return result;
+            return solution;
+        } else {
+            return null;
         }
-        return initial;
     }
 
     private static boolean unsolved(ArrayList<TileState> moves, int start) {
